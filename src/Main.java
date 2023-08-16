@@ -32,6 +32,7 @@ class Main {
         System.out.printf("내용 : ");
         String content = sc.nextLine();
 
+
         System.out.printf("%d번 글이 생성되었습니다.\n",id);
       }
       else if (cmd.equals("article list")) {
