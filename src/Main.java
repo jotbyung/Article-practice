@@ -27,7 +27,6 @@ class Main {
       if (cmd.equals("article write")) {
         int id = lastArticleId + 1;
         lastArticleId = id;
-
         System.out.printf("제목 : ");
         String title = sc.nextLine();
         System.out.printf("내용 : ");
