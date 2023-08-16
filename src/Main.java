@@ -1,4 +1,6 @@
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
@@ -7,6 +9,10 @@ class Main {
   public static void main(String[] args) {
     System.out.println("== 프로그램 시작 ==");
     Scanner sc = new Scanner(System.in);
+    SimpleDateFormat format1 = new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss");
+    Date time = new Date();
+    String time1 = format1.format(time);
+
 
     int lastArticleId = 0;
     List<Article> articles = new ArrayList<>();
@@ -45,12 +51,53 @@ class Main {
         if (articles.size() == 0) {
           System.out.println("게시글이 없습니다.");
         } else {
-          for (int i = 0; i < articles.size(); i++) {
-            articles.get(i);
+          for (int i = articles.size()-1; i >= 0; i--) {
+            Article article = articles.get(i);
+            System.out.printf("%d  |  %s\n",article.id, article.title);
           }
         }
       }
+      else if (cmd.startsWith("article detail")) {
+        String[] cmdBits = cmd.split(" ");
+        int id = Integer.parseInt(cmdBits[2]);
 
+        Article foundArticle = null;
+
+        for (int i = 0; i < articles.size(); i++) {
+          Article article = articles.get(i);
+          if (article.id == id) {
+            foundArticle = article;
+            break;
+          }
+        }
+        if (foundArticle == null) {
+          System.out.printf("%d번 글이 없습니다.\n",id);
+          continue;
+        } else {
+          System.out.printf("번호 : %d\n", id);
+          System.out.printf("작성날짜 : %s\n", time1);
+          System.out.printf("제목 : %s\n", foundArticle.title);
+          System.out.printf("내용 : %s\n", foundArticle.content);
+        }
+      }
+      else if (cmd.startsWith("article delete")) {
+        String[] cmdBits = cmd.split(" ");
+        int id = Integer.parseInt(cmdBits[2]);
+
+
+        for (int i = 0; i < articles.size(); i++) {
+          Article article = articles.get(i);
+          if (article.id == id) {
+            articles.remove(i);
+            System.out.printf("%d번 글이 삭제되었습니다.\n",article.id);
+            break;
+          }
+          else {
+            System.out.printf("%d번 글이 없습니다.\n",id);
+            continue;
+          }
+        }
+      }
       else {
         System.out.println("존재하지 않는 명령어입니다.");
       }
