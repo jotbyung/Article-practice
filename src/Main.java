@@ -79,42 +79,22 @@ class Main {
       } else if (cmd.startsWith("article delete")) {
         String[] cmdBits = cmd.split(" ");
         int id = Integer.parseInt(cmdBits[2]);
+        int foundIdx = -1;
 
-//        int foundIdx = -1;
-//
-//
-//        for (int i = 0; i < articles.size(); i++) {
-//          Article article = articles.get(i);
-//          if (article.id == id) {
-//            foundIdx = i;
-//            break;
-//          }
-//        }
-//
-//        if (foundIdx == -1) {
-//          System.out.printf("%d번 글이 없습니다.\n", id);
-//          continue;
-//        }
-//
-//        articles.remove(id-1);
-//        System.out.printf("%d번 글이 삭제되었습니다.\n", id);
-//        3개 글이 존재할때, 3->1->2 순으로 삭제하면 오류가 뜸
-
-        Article foundArticle = null;
         for (int i = 0; i < articles.size(); i++) {
           Article article = articles.get(i);
           if (article.id == id) {
-            foundArticle = article;
-            articles.remove(i);
-            System.out.printf("%d번 게시글이 삭제되었습니다.\n",id);
+            foundIdx = i;
             break;
           }
         }
-
-        if (foundArticle == null) {
-          System.out.printf("%d번 게시글은 존재하지 않습니다.\n", id);
+        if (foundIdx == -1) {
+          System.out.printf("%d번 글이 없습니다.\n", id);
           continue;
         }
+
+        articles.remove(foundIdx);
+        System.out.printf("%d번 글이 삭제되었습니다.\n", id);
       }
 
 
