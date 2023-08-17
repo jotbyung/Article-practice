@@ -9,11 +9,6 @@ class Main {
   public static void main(String[] args) {
     System.out.println("== 프로그램 시작 ==");
     Scanner sc = new Scanner(System.in);
-    SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    Date time = new Date();
-    String time1 = format1.format(time);
-
-
     int lastArticleId = 0;
     List<Article> articles = new ArrayList<>();
 
@@ -34,13 +29,15 @@ class Main {
       if (cmd.equals("article write")) {
         int id = lastArticleId + 1;
         lastArticleId = id;
+
+        String regDate = Util.getNowDateStr();
         System.out.printf("제목 : ");
         String title = sc.nextLine();
         System.out.printf("내용 : ");
         String content = sc.nextLine();
 
 
-        Article article = new Article(id, title, content);
+        Article article = new Article(id, regDate, title, content);
         articles.add(article);
 
 
@@ -72,7 +69,7 @@ class Main {
           continue;
         } else {
           System.out.printf("번호 : %d\n", id);
-          System.out.printf("작성날짜 : %s\n", time1);
+          System.out.printf("작성날짜 : %s\n", foundArticle.regDate);
           System.out.printf("제목 : %s\n", foundArticle.title);
           System.out.printf("내용 : %s\n", foundArticle.content);
         }
@@ -111,11 +108,13 @@ class Main {
 
 class Article {
   int id;
+  String regDate;
   String title;
   String content;
 
-  Article(int id, String title, String content) {
+  Article(int id, String regDate, String title, String content) {
     this.id = id;
+    this.regDate = regDate;
     this.title = title;
     this.content = content;
   }
