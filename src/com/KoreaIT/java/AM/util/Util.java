@@ -9,8 +9,6 @@ public class Util {
 
     Date time = new Date();
 
-    String time1 = format.format(time);
-
     return format.format(time);
   }
 }
