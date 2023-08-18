@@ -7,13 +7,13 @@ import java.util.List;
 import java.util.Scanner;
 
 public class MemberController {
-  private  List<Member> members;
+  private List<Member> members;
   private Scanner sc;
   public MemberController(List<Member> members, Scanner sc) {
     this.members = members;
     this.sc = sc;
   }
-  public void dojoin(Scanner sc) {
+  public void doJoin(Scanner sc) {
     int id = members.size() + 1;
 
     String regDate = Util.getNowDateStr();
