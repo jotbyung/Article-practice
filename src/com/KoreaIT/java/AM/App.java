@@ -1,5 +1,7 @@
 package com.KoreaIT.java.AM;
 
+import com.KoreaIT.java.AM.controller.ArticleController;
+import com.KoreaIT.java.AM.controller.MemberController;
 import com.KoreaIT.java.AM.dto.Article;
 import com.KoreaIT.java.AM.util.Util;
 import com.KoreaIT.java.AM.dto.Member;
@@ -20,6 +22,8 @@ public class App {
     System.out.println("== 프로그램 시작 ==");
     makeTestData();
     Scanner sc = new Scanner(System.in);
+    MemberController memberController = new MemberController(members, sc);
+    ArticleController articleController = new ArticleController();
 
 
     while (true) {
@@ -37,51 +41,12 @@ public class App {
       }
 
 
-      
       if (cmd.equals("member join")) {
-        int id = members.size() + 1;
-
-        String regDate = Util.getNowDateStr();
-        String loginId = null;
-
-        while (true) {
-          System.out.printf("로그인 아이디 : ");
-          loginId = sc.nextLine();
-
-          if (isJoinableLoginId(loginId) == false) {
-            System.out.printf("%s은(는) 이미 사용중인 아이디입니다.\n",loginId);
-            continue;
-          }
-          break;
-        }
-
-        String loginPw = null;
-        String loginPwcheck = null;
-
-        while (true) {
-          System.out.printf("로그인 비밀번호 : ");
-          loginPw = sc.nextLine();
-          System.out.printf("로그인 비밀번호 확인 : ");
-          loginPwcheck = sc.nextLine();
-
-          if (loginPw.equals(loginPwcheck) == false) {
-            System.out.println("비밀번호를 다시 입력하세요");
-            continue;
-          }
-          break;
-        }
-
-        System.out.printf("이름 : ");
-        String name = sc.nextLine();
-
-        Member member = new Member(id, regDate, loginId, loginPw, name);
-        members.add(member);
-
-        System.out.printf("%d번 회원이 가입했습니다.\n", id);
+        memberController.dojoin(sc);
       }
 
 
-        else if (cmd.equals("article write")) {
+      else if (cmd.equals("article write")) {
           int id = articles.size() + 1;
 
           String regDate = Util.getNowDateStr();
@@ -94,10 +59,7 @@ public class App {
           articles.add(article);
 
           System.out.printf("%d번 글이 생성되었습니다.\n", id);
-        }
-
-
-        else if (cmd.startsWith("article list")) {
+        } else if (cmd.startsWith("article list")) {
           if (articles.size() == 0) {
             System.out.println("게시글이 없습니다.");
             continue;
@@ -127,7 +89,6 @@ public class App {
           }
 
 
-
         } else if (cmd.startsWith("article detail")) {
           String[] cmdBits = cmd.split(" ");
           int id = Integer.parseInt(cmdBits[2]);
@@ -144,7 +105,6 @@ public class App {
           System.out.printf("제목 : %s\n", foundArticle.title);
           System.out.printf("내용 : %s\n", foundArticle.content);
           System.out.printf("조회수 : %d", foundArticle.viewCnt);
-
 
 
         } else if (cmd.startsWith("article modify")) {
@@ -165,10 +125,7 @@ public class App {
           foundArticle.title = title;
           foundArticle.content = content;
           System.out.printf("%d번 글이 수정되었습니다.\n", id);
-        }
-
-
-        else if (cmd.startsWith("article delete")) {
+        } else if (cmd.startsWith("article delete")) {
           String[] cmdBits = cmd.split(" ");
           int id = Integer.parseInt(cmdBits[2]);
           int foundIdx = getArticleIndexById(id);
@@ -189,7 +146,7 @@ public class App {
 
     }
 
-  private Article getArticleById(int id) {
+    private Article getArticleById ( int id){
 //    for (int i =0; i < articles.size(); i++) {
 //      Article article = articles.get(i);
 //
@@ -204,36 +161,14 @@ public class App {
 //        return article;
 //      }
 //    }
-    int index = getArticleIndexById(id);
-    if (index != -1) {
-      return articles.get(index);
-    }
-    return null;
-  }
-
-  private boolean isJoinableLoginId(String loginId) {
-    int index = getMemberIndexByloginId(loginId);
-
-    if (index == -1) {
-      return true;
-    }
-    return false;
-    }
-
-    private int getMemberIndexByloginId(String loginId) {
-      int i = 0;
-
-      for (Member member : members) {
-        if (member.loginId.equals(loginId)) {
-          return i;
-        }
-        i++;
+      int index = getArticleIndexById(id);
+      if (index != -1) {
+        return articles.get(index);
       }
-      return -1;
+      return null;
     }
 
-
-    private int getArticleIndexById(int id) {
+    private int getArticleIndexById(int id){
       int i = 0;
 
       for (Article article : articles) {
@@ -244,10 +179,12 @@ public class App {
       }
       return -1;
     }
-      private void makeTestData () {
-        System.out.println("테스트데이터 생성");
-        articles.add(new Article(1, Util.getNowDateStr(), "title1", "content1", 11));
-        articles.add(new Article(2, Util.getNowDateStr(), "title2", "content2", 22));
-        articles.add(new Article(3, Util.getNowDateStr(), "title3", "content3", 33));
-      }
+
+
+  private void makeTestData() {
+    articles.add(new Article(1, Util.getNowDateStr(), "title1", "content1", 11));
+    articles.add(new Article(2, Util.getNowDateStr(), "title2", "content2", 22));
+    articles.add(new Article(3, Util.getNowDateStr(), "title3", "content3", 33));
+
+  }
 }
